@@ -1,38 +1,93 @@
-.App {
+body {
+  margin: 0;
+  font-family: Arial, sans-serif;
+  background-color: #f4f4f4;
+}
+
+.container {
   text-align: center;
-}
-
-.App-logo {
-  height: 40vmin;
-  pointer-events: none;
-}
-
-@media (prefers-reduced-motion: no-preference) {
-  .App-logo {
-    animation: App-logo-spin infinite 20s linear;
-  }
-}
-
-.App-header {
-  background-color: #282c34;
-  min-height: 100vh;
+  padding: 20px;
   display: flex;
   flex-direction: column;
   align-items: center;
-  justify-content: center;
-  font-size: calc(10px + 2vmin);
+}
+
+h1 {
+  margin: 10px 0;
+  color: #333;
+}
+
+.role-select button {
+  margin: 10px;
+  padding: 12px 24px;
+  font-size: 16px;
+  border-radius: 5px;
+  border: none;
+  cursor: pointer;
+  background-color: #2196f3;
   color: white;
 }
 
-.App-link {
-  color: #61dafb;
+.role-select button:hover {
+  background-color: #0b7dda;
 }
 
-@keyframes App-logo-spin {
-  from {
-    transform: rotate(0deg);
-  }
-  to {
-    transform: rotate(360deg);
-  }
+.grid.grid-5x5 {
+  display: grid;
+  grid-template-columns: repeat(5, 100px);
+  grid-template-rows: repeat(5, 100px);
+  gap: 6px;
+  justify-content: center;
+  margin: 20px auto;
+}
+
+.square {
+  width: 100px;
+  height: 100px;
+  background-color: #ddd;
+  border: 1px solid #999;
+  padding: 0;
+  overflow: hidden;
+  display: flex;
+  align-items: center;
+  justify-content: center;
+  cursor: pointer;
+}
+
+.square img {
+  width: 100%;
+  height: 100%;
+  object-fit: cover;
+  pointer-events: none;
+}
+
+.new-game-button {
+  margin-top: 20px;
+  padding: 10px 20px;
+  font-size: 16px;
+  background-color: #ffc107;
+  border: none;
+  border-radius: 5px;
+  cursor: pointer;
+  font-weight: bold;
+}
+
+.new-game-button:hover {
+  background-color: #ffca2c;
+}
+
+.scoreboard {
+  display: flex;
+  justify-content: center;
+  gap: 40px;
+  margin-top: 10px;
+  font-size: 18px;
+  font-weight: bold;
+}
+
+.message {
+  margin-top: 15px;
+  font-size: 20px;
+  color: #d32f2f;
+  font-weight: bold;
 }
