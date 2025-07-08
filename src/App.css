@@ -32,10 +32,10 @@ h1 {
   background-color: #0b7dda;
 }
 
-.grid.grid-5x5 {
+.grid.grid-4x4 {
   display: grid;
-  grid-template-columns: repeat(5, 100px);
-  grid-template-rows: repeat(5, 100px);
+  grid-template-columns: repeat(4, 100px);
+  grid-template-rows: repeat(4, 100px);
   gap: 6px;
   justify-content: center;
   margin: 20px auto;
@@ -89,5 +89,10 @@ h1 {
   margin-top: 15px;
   font-size: 20px;
   color: #d32f2f;
+  font-weight: bold;
+}
+
+.tile-ratio {
+  margin-top: 10px;
   font-weight: bold;
 }

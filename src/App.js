@@ -6,17 +6,29 @@ const imageUrls = {
   chicken: 'https://thumbs.dreamstime.com/z/full-body-brown-chicken-hen-standing-isolated-white-backgroun-background-use-farm-animals-livestock-theme-49741285.jpg?ct=jpeg',
 };
 
-const GRID_SIZE = 5;
-const TOTAL_CELLS = GRID_SIZE * GRID_SIZE;
+const GRID_ROWS = 4;
+const GRID_COLS = 4;
+const TOTAL_CELLS = GRID_ROWS * GRID_COLS;
 
 function generateBoard() {
-  return Array.from({ length: TOTAL_CELLS }, () => {
-    const isBanana = Math.random() < 0.5;
-    return {
-      image: isBanana ? 'banana' : 'chicken',
-      revealed: false,
-    };
-  });
+  const numBanana = TOTAL_CELLS / 2; // 8
+  const numChicken = TOTAL_CELLS / 2; // 8
+
+  const images = [
+    ...Array(numBanana).fill('banana'),
+    ...Array(numChicken).fill('chicken'),
+  ];
+
+  // Shuffle the array
+  for (let i = images.length - 1; i > 0; i--) {
+    const j = Math.floor(Math.random() * (i + 1));
+    [images[i], images[j]] = [images[j], images[i]];
+  }
+
+  return images.map(img => ({
+    image: img,
+    revealed: false,
+  }));
 }
 
 function App() {
@@ -32,7 +44,7 @@ function App() {
       const totalCorrect = board.filter(cell => cell.image === playerChoice).length;
       if (playerScore === totalCorrect) {
         setGameOver(true);
-        setMessage('🎉 You win! All correct tiles revealed!');
+        setMessage('🎉 You win! All your tiles revealed!');
       }
     }
   }, [playerScore, board, playerChoice]);
@@ -40,22 +52,30 @@ function App() {
   const handleClick = (index) => {
     if (gameOver || board[index].revealed || !playerChoice) return;
 
-    const cell = board[index];
-    const isCorrect = cell.image === playerChoice;
+    const clickedCell = board[index];
+    const isCorrect = clickedCell.image === playerChoice;
 
-    const updatedBoard = [...board];
-    updatedBoard[index].revealed = true;
-    setBoard(updatedBoard);
+    // Reveal all tiles after any click
+    const revealedBoard = board.map(cell => ({ ...cell, revealed: true }));
+    setBoard(revealedBoard);
 
     if (isCorrect) {
+      const newScore = playerScore + 1;
+      setPlayerScore(newScore);
       setCorrectCount(prev => ({
         ...prev,
-        [playerChoice]: prev[playerChoice] + 1
+        [playerChoice]: prev[playerChoice] + 1,
       }));
-      setPlayerScore(prev => prev + 1);
+
+      const totalCorrect = revealedBoard.filter(cell => cell.image === playerChoice).length;
+      if (newScore === totalCorrect) {
+        setGameOver(true);
+        setMessage('🎉 You win! All your tiles revealed!');
+      }
     } else {
       setGameOver(true);
-      setMessage('💥 Wrong tile! Game over. You clicked the opponent’s image.');
+      const otherPlayer = playerChoice === 'chicken' ? 'banana' : 'chicken';
+      setMessage(`💥 Wrong tile! ${otherPlayer.toUpperCase()} wins by consistency!`);
     }
   };
 
@@ -92,7 +112,7 @@ function App() {
 
       {message && <div className="message">{message}</div>}
 
-      <div className="grid grid-5x5">
+      <div className="grid grid-4x4">
         {board.map((cell, index) => (
           <button
             key={index}
@@ -110,7 +130,13 @@ function App() {
         ))}
       </div>
 
-      {/* ✅ New Game Button moved below the grid */}
+      {gameOver && (
+        <div className="tile-ratio">
+          <p>Total Chickens: {board.filter(c => c.image === 'chicken').length}</p>
+          <p>Total Bananas: {board.filter(c => c.image === 'banana').length}</p>
+        </div>
+      )}
+
       <button className="new-game-button" onClick={handleNewGame}>🔄 New Game</button>
     </div>
   );
